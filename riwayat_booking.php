@@ -1,13 +1,11 @@
 <?php
     session_start();
-    // Pengecekan login, jika tidak login, lempar ke index.php
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $_SESSION['user_role'] !== 'user') {
         header('Location: index.php');
         exit;
     }
     require 'koneksi.php';
 
-    // Mengambil data riwayat booking untuk user yang sedang login
     $current_user_id = $_SESSION['user_id'];
 
     $sql_history = "SELECT 
