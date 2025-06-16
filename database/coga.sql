@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 14, 2025 at 07:08 AM
+-- Generation Time: Jun 16, 2025 at 03:25 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -53,7 +53,16 @@ INSERT INTO `bookings` (`id_booking`, `user_id`, `id_service`, `id_kapster`, `id
 (20250007, 12, 'serv4', 'K0003', 4, 2, '2025-06-16', 70000, 'transfer_684cfab6cf0d16.22816472.png', 'Menunggu Konfirmasi', '2025-06-14 04:29:42'),
 (20250008, 12, 'serv1', 'K0002', 12, 2, '2025-06-24', 50000, 'transfer_684cfb7d85c724.43714416.jpg', 'Menunggu Konfirmasi', '2025-06-14 04:33:01'),
 (20250009, 11, 'serv4', 'K0001', 1, 1, '2025-06-16', 70000, NULL, 'Menunggu Konfirmasi', '2025-06-14 04:47:20'),
-(20250010, 11, 'serv4', 'K0003', 2, 1, '2025-06-22', 70000, NULL, 'Menunggu Konfirmasi', '2025-06-14 04:51:52');
+(20250010, 11, 'serv4', 'K0003', 2, 1, '2025-06-22', 70000, NULL, 'Menunggu Konfirmasi', '2025-06-14 04:51:52'),
+(20250011, 14, 'serv1', 'K0003', 11, 2, '2025-06-14', 50000, 'transfer_684d098b800f76.91664591.jpg', 'Dikonfirmasi', '2025-06-14 05:32:59'),
+(20250012, 15, 'serv1', 'K0003', 2, 1, '2025-06-21', 50000, NULL, 'Menunggu Konfirmasi', '2025-06-14 07:49:06'),
+(20250013, 15, 'serv4', 'K0003', 2, 1, '2025-06-14', 70000, NULL, 'Dikonfirmasi', '2025-06-14 08:06:41'),
+(20250014, 10, 'serv2', 'K0001', 4, 1, '2025-06-15', 50000, NULL, 'Menunggu Konfirmasi', '2025-06-14 08:08:26'),
+(20250015, 15, 'serv4', 'K0003', 1, 1, '2025-06-15', 70000, NULL, 'Dikonfirmasi', '2025-06-14 08:09:19'),
+(20250016, 16, 'serv4', 'K0003', 5, 1, '2025-06-15', 70000, NULL, 'Selesai', '2025-06-14 10:12:11'),
+(20250017, 11, 'serv4', 'K0003', 7, 1, '2025-06-15', 70000, NULL, 'Selesai', '2025-06-15 04:41:24'),
+(20250018, 17, 'serv1', 'K0003', 1, 1, '2025-06-16', 50000, NULL, 'Selesai', '2025-06-15 06:54:10'),
+(20250019, 18, 'serv4', 'K0001', 1, 1, '2025-06-15', 70000, NULL, 'Selesai', '2025-06-15 12:34:22');
 
 -- --------------------------------------------------------
 
@@ -169,7 +178,12 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`user_id`, `full_name`, `email`, `phone_number`, `password`, `role`, `created_at`) VALUES
 (10, 'admin', 'admin@gmail.com', '080000000000', '$2y$10$suXA4G6jA6xckswvi.Xn3uYFpSFDOpFlMTg/yEJiKUbD4bdpd5WQK', 'admin', '2025-06-12 07:49:00'),
 (11, 'Afdal', 'rahmadatul68@gmail.com', '0895621964228', '$2y$10$yjK.7CJUhPz9tTDzzA.f9.b/ksWuITcbetoVsqrPNC3JXhbSXNysG', 'user', '2025-06-12 07:50:48'),
-(12, 'nencycantik', 'nency@gmail.com', '08000000', '$2y$10$6p4Pii8S4RiDjp2mjSW8Q.A0n8Pp/i8236GNVUb6PK4muojWIU2R6', 'user', '2025-06-12 16:42:57');
+(12, 'nencycantik', 'nency@gmail.com', '08000000', '$2y$10$6p4Pii8S4RiDjp2mjSW8Q.A0n8Pp/i8236GNVUb6PK4muojWIU2R6', 'user', '2025-06-12 16:42:57'),
+(14, 'Faris', 'faris@gmail.com', '0800000022', '$2y$10$4AtPWlEv0cy0vnVwXeb3beHUCXfy26G9ZfAOyLRt9RQ/CQEZt9oZ.', 'user', '2025-06-14 05:31:30'),
+(15, 'Rahmadatul', 'rahmadatul12@gmail.com', '08111', '$2y$10$FoQdX0W/Eofc4ZUxENw3ke6F9r46ZKdzNrRCmdj29UN0djOXqt97m', 'user', '2025-06-14 07:48:07'),
+(16, 'Muhammad Al Fath', 'gacoralpat@gmail.com', '085263404655', '$2y$10$kcqyEbOkYexv8lsUrG2NH.fjaw9RyLI.k68w6FOCaxVarHlz7JPde', 'user', '2025-06-14 10:11:33'),
+(17, 'Aulia Digyana', 'digyanazoom@gmail.com', '0800000000000000', '$2y$10$aT8ycKHjcrorUB1s3cRQmOOT9O0x55yz/geG9IdpbrMUNQDxEi732', 'user', '2025-06-15 06:53:17'),
+(18, 'Ria', 'riarestt@gmail.com', '08xxx', '$2y$10$xu3LtrzedrZfmrN2sod/hu9XXtRMEoiQUE/MK3zNS0PNnpRKTzx0G', 'user', '2025-06-15 12:33:04');
 
 --
 -- Indexes for dumped tables
@@ -228,7 +242,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id_booking` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20250011;
+  MODIFY `id_booking` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20250020;
 
 --
 -- AUTO_INCREMENT for table `metode_pembayaran`
@@ -246,7 +260,7 @@ ALTER TABLE `slot_waktu`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables

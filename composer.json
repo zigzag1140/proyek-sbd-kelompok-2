@@ -1,0 +1,7 @@
+{
+  "name": "coga/barbershop",
+  "description": "Sistem Booking untuk Coga Barbershop.",
+  "require": {
+    "phpmailer/phpmailer": "^6.9"
+  }
+}
