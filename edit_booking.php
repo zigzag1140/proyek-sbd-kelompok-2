@@ -33,6 +33,24 @@
     <title>Edit Booking #<?php echo $booking_id; ?></title>
     <link rel="icon" type="image/png" href="gambar/logo.jpg">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Menambahkan sedikit style untuk tombol hapus agar berbeda */
+        .delete-btn {
+            background-color: #dc3545; /* Warna merah */
+            color: white;
+            padding: 6px 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-left: 10px; /* Jarak dari tombol batal */
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -61,6 +79,8 @@
                 <div class="form-group">
                     <button type="submit" class="save-btn">Simpan Perubahan</button>
                     <a href="admin_page.php" class="cancel-btn">Batal</a>
+                    
+                    <a href="hapus_booking_handler.php?id=<?php echo htmlspecialchars($booking['id_booking']); ?>" class="delete-btn" onclick="return confirm('Apakah Anda yakin ingin menghapus booking ini?');">Hapus</a>
                 </div>
             </form>
         </div>

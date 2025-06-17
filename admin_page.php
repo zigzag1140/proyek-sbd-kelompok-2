@@ -14,6 +14,7 @@
                             b.id_booking, b.tanggal_booking, b.status_booking, b.bukti_transfer,
                             s.nama_service, k.nama_kapster, sw.jam,
                             u.full_name AS nama_pemesan,
+                            u.phone_number,
                             mp.nama_metode
                         FROM bookings b
                         JOIN users u ON b.user_id = u.user_id
@@ -52,20 +53,63 @@
     <link rel="icon" type="image/png" href="gambar/logo.jpg">
     <link rel="stylesheet" href="style.css">
     <style>
-        .btn-edit {
-            display: inline-block;
-            background-color: #ffc107;
-            color: #212529;
-            padding: 5px 10px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .btn-edit:hover {
-            background-color: #e0a800;
-        }
-    </style>
+    body {
+        background-color: white; 
+        margin: 0;
+        font-family: sans-serif; 
+    }
+    
+    .history-section .container {
+        padding: 20px 30px; 
+        margin: 30px auto;  
+        max-width: 1400px;  
+        background-color: #fff; 
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05); 
+    }
+    
+    .btn-edit {
+        display: inline-block;
+        background-color: #ffc107;
+        color: #212529;
+        padding: 5px 10px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-edit:hover {
+        background-color: #e0a800;
+    }
+
+    .history-table {
+        width: 100%; 
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .history-table th, .history-table td {
+        padding: 12px 10px; 
+        text-align: left;
+        border: 1px solid #dee2e6;
+        word-wrap: break-word; 
+        overflow-wrap: break-word;
+        white-space: nowrap; 
+    }
+    
+    .history-table th {
+        background-color: #f8f9fa; 
+    }
+
+    .history-table td:nth-child(2), 
+    .history-table td:nth-child(8) { 
+        white-space: normal;
+    }
+
+</style>
+
 </head>
 <body>
     <header>
@@ -97,55 +141,60 @@
                     <a href="admin_page.php" class="reset-btn">Tampilkan Semua</a>
                 </div>
             </form>
-            <div class="table-responsive">
-                <table class="history-table">
-                    <thead>
+
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama Pemesan</th>
+                        <th>No. HP</th>
+                        <th>Tanggal</th>
+                        <th>Waktu</th>
+                        <th>Layanan</th>
+                        <th>Kapster</th>
+                        <th>Metode Pembayaran</th>
+                        <th>Bukti Transfer</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($all_bookings)): ?>
                         <tr>
-                            <th>ID</th>
-                            <th>Nama Pemesan</th>
-                            <th>Tanggal & Waktu</th>
-                            <th>Layanan & Kapster</th>
-                            <th>Metode Pembayaran</th>
-                            <th>Bukti Transfer</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
+                            <td colspan="11" style="text-align:center;">Tidak ada data booking untuk tanggal yang dipilih.</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (empty($all_bookings)): ?>
+                    <?php else: ?>
+                        <?php foreach ($all_bookings as $booking): ?>
                             <tr>
-                                <td colspan="8" style="text-align:center;">Tidak ada data booking untuk tanggal yang dipilih.</td>
+                                <td>#<?php echo $booking['id_booking']; ?></td>
+                                <td><?php echo htmlspecialchars($booking['nama_pemesan']); ?></td>
+                                <td><?php echo htmlspecialchars($booking['phone_number']); ?></td>
+                                <td><?php echo date("d M Y", strtotime($booking['tanggal_booking'])); ?></td>
+                                <td><?php echo date("h:i A", strtotime($booking['jam'])); ?></td>
+                                <td><?php echo htmlspecialchars($booking['nama_service']); ?></td>
+                                <td><?php echo htmlspecialchars($booking['nama_kapster']); ?></td>
+                                <td><?php echo htmlspecialchars($booking['nama_metode'] ?? '-'); ?></td>
+                                <td>
+                                    <?php if (!empty($booking['bukti_transfer'])): ?>
+                                        <a href="uploads/<?php echo htmlspecialchars($booking['bukti_transfer']); ?>" target="_blank">Lihat Bukti</a>
+                                    <?php else: ?>
+                                        -
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-<?php echo strtolower(str_replace(' ', '-', $booking['status_booking'])); ?>">
+                                        <?php echo htmlspecialchars($booking['status_booking']); ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="edit_booking.php?id=<?php echo $booking['id_booking']; ?>" class="btn-edit">Ubah</a>
+                                </td>
                             </tr>
-                        <?php else: ?>
-                            <?php foreach ($all_bookings as $booking): ?>
-                                <tr>
-                                    <td>#<?php echo $booking['id_booking']; ?></td>
-                                    <td><?php echo htmlspecialchars($booking['nama_pemesan']); ?></td>
-                                    <td><?php echo date("d M Y", strtotime($booking['tanggal_booking'])); ?><br><small><?php echo date("h:i A", strtotime($booking['jam'])); ?></small></td>
-                                    <td><?php echo htmlspecialchars($booking['nama_service']); ?><br><small>oleh <?php echo htmlspecialchars($booking['nama_kapster']); ?></small></td>
-                                    <td><?php echo htmlspecialchars($booking['nama_metode'] ?? '-'); ?></td>
-                                    <td>
-                                        <?php if (!empty($booking['bukti_transfer'])): ?>
-                                            <a href="uploads/<?php echo htmlspecialchars($booking['bukti_transfer']); ?>" target="_blank">Lihat Bukti</a>
-                                        <?php else: ?>
-                                            -
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge status-<?php echo strtolower(str_replace(' ', '-', $booking['status_booking'])); ?>">
-                                            <?php echo htmlspecialchars($booking['status_booking']); ?>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <a href="edit_booking.php?id=<?php echo $booking['id_booking']; ?>" class="btn-edit">Ubah</a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
             </div>
-        </div>
     </section>
 </body>
 </html>
