@@ -34,9 +34,8 @@
     <link rel="icon" type="image/png" href="gambar/logo.jpg">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Menambahkan sedikit style untuk tombol hapus agar berbeda */
         .delete-btn {
-            background-color: #dc3545; /* Warna merah */
+            background-color: #dc3545; 
             color: white;
             padding: 6px 14px;
             font-weight: 600;
@@ -45,7 +44,7 @@
             cursor: pointer;
             text-decoration: none;
             font-size: 0.9em;
-            margin-left: 10px; /* Jarak dari tombol batal */
+            margin-left: 10px; 
         }
         .delete-btn:hover {
             background-color: #c82333;

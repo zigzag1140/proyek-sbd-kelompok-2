@@ -1,15 +1,11 @@
 <?php
 session_start();
-// Mengimpor file koneksi dan autoloader dari Composer
 require 'koneksi.php';
 require 'vendor/autoload.php';
 
-// Menggunakan kelas PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// --- VALIDASI AKSES DAN INPUT ---
-// Memastikan hanya admin yang sudah login dan menggunakan metode POST yang bisa mengakses halaman ini.
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin' || $_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: index.php');
     exit;
@@ -18,18 +14,15 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin' || $_SERV
 $booking_id = $_POST['id_booking'];
 $new_status = $_POST['status_booking'];
 
-// Memastikan data yang diterima tidak kosong.
 if (empty($booking_id) || empty($new_status)) {
     $_SESSION['update_status'] = "Error: Data yang diterima tidak lengkap.";
     header('Location: admin_page.php');
     exit;
 }
 
-// --- PROSES UPDATE STATUS BOOKING ---
-$conn->begin_transaction(); // Memulai transaksi untuk memastikan integritas data
+$conn->begin_transaction();
 
 try {
-    // Menyiapkan query untuk memperbarui status booking
     $sql_update = "UPDATE bookings SET status_booking = ? WHERE id_booking = ?";
     $stmt_update = $conn->prepare($sql_update);
     if ($stmt_update === false) {
@@ -38,15 +31,11 @@ try {
     $stmt_update->bind_param("si", $new_status, $booking_id);
     $stmt_update->execute();
 
-    // Memeriksa apakah update berhasil
     if ($stmt_update->affected_rows > 0) {
         $_SESSION['update_status'] = "Status untuk Booking #" . htmlspecialchars($booking_id) . " berhasil diperbarui menjadi '" . htmlspecialchars($new_status) . "'.";
 
-        // --- PENGIRIMAN EMAIL BERDASARKAN STATUS BARU ---
-        // Jika status adalah 'Dikonfirmasi' atau 'Selesai', kirim email notifikasi.
         if ($new_status === 'Dikonfirmasi' || $new_status === 'Selesai') {
             
-            // Query untuk mengambil detail lengkap booking, termasuk harga layanan
             $sql_details = 
                 "SELECT 
                     u.email, u.full_name, b.tanggal_booking, 
@@ -70,25 +59,21 @@ try {
             if ($booking_details) {
                 $mail = new PHPMailer(true);
 
-                // Konfigurasi Server SMTP
                 $mail->isSMTP();
                 $mail->Host       = 'smtp.gmail.com';
                 $mail->SMTPAuth   = true;
-                $mail->Username   = 'rahmadatul68@gmail.com'; // Ganti dengan alamat email Anda
-                $mail->Password   = 'eyyw uuqt cbtq pqlf';    // Ganti dengan App Password Gmail Anda
+                $mail->Username   = 'rahmadatul68@gmail.com';
+                $mail->Password   = 'eyyw uuqt cbtq pqlf';   
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                 $mail->Port       = 465;
                 $mail->CharSet    = 'UTF-8';
 
-                // Pengirim dan Penerima
                 $mail->setFrom('no-reply@cogabarbershop.com', 'Coga Barbershop');
                 $mail->addAddress($booking_details['email'], $booking_details['full_name']);
                 
                 $mail->isHTML(true);
 
-                // Menyesuaikan subjek dan isi email berdasarkan status
                 if ($new_status === 'Dikonfirmasi') {
-                    // --- EMAIL KONFIRMASI ---
                     $mail->Subject = 'Booking Anda di Coga Barbershop Dikonfirmasi! (ID: #' . $booking_id . ')';
                     $mail->Body    = 
                         "<div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px;'>"
@@ -107,7 +92,6 @@ try {
                         . "</div>";
 
                 } elseif ($new_status === 'Selesai') {
-                    // --- EMAIL RESI SETELAH LAYANAN SELESAI ---
                     $harga_formatted = "Rp " . number_format($booking_details['harga'], 0, ',', '.');
                     $mail->Subject = 'Terima Kasih atas Kunjungan Anda! Resi Coga Barbershop (ID: #' . $booking_id . ')';
                     $mail->Body    = 
@@ -130,8 +114,6 @@ try {
                         . "<p><strong>Salam Keren,<br>Tim Coga Barbershop</strong></p>"
                         . "</div>";
                 }
-
-                // Kirim email dan tambahkan notifikasi ke sesi
                 $mail->send();
                 $_SESSION['update_status'] .= " Email notifikasi telah berhasil dikirim.";
 
@@ -144,17 +126,15 @@ try {
     }
 
     $stmt_update->close();
-    $conn->commit(); // Konfirmasi semua perubahan jika berhasil
+    $conn->commit(); 
 
 } catch (Exception $e) {
-    $conn->rollback(); // Batalkan semua perubahan jika terjadi error
-    // Mencatat error ke sesi untuk ditampilkan di halaman admin
+    $conn->rollback(); 
     $_SESSION['update_status'] = "Error: Terjadi kesalahan. " . $e->getMessage();
 }
 
 $conn->close();
 
-// Mengarahkan kembali ke halaman admin
 header('Location: admin_page.php');
 exit;
 ?>
